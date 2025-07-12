@@ -22,6 +22,8 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     start_date = models.DateField()
     end_date = models.DateField()
+    description = models.TextField(blank=True)
+
 
     team_members = models.ManyToManyField('Person', related_name='projects_worked_on')
     approvers = models.ManyToManyField('Person', related_name='projects_approved')

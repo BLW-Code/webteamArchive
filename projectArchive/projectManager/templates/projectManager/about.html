@@ -1,0 +1,23 @@
+{% extends 'projectManager/base.html' %}
+
+{% block title %}About the Developer - Braden Wilson{% endblock %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-3">
+      <div class="d-flex justify-content-center">
+      <img class="img-fluid rounded-circle" width="400" height="416" src="{% static 'projectManager/images/IMG_6190.jpeg' %}">
+      </div>
+      <p class="text-center mt-3">Email: <a href="mailto:bwilson@dbu.edu">bwilson@dbu.edu</a></p>
+    </div>
+    <div class="col-12 col-lg-9">
+      <h1>Braden Wilson</h1>
+      <p>Hi everyone,<br> Welcome to my second attempt at creating a usable project archive for Web Team. My first attempt lived in OneDrive. I tried my best to replicate a relational database in my environment, but at the end of the day it's a file system not a database.</p>
+      <p>This second iteration began as a semester-long project for my web development course. Since I have touched thousands of webpages at this point, I wanted to challenge myself by using new tools. This website is actually a Django Application that utilizes Bootstrap components along with my own CSS and JavaScript. It is a relatively simple application, but it shows just how clunky and unintuitive the current project archive system is.</p>
+      <p>While I doubt this application will ever reach production due to organizational contraints, I hope this demo gives you an idea of the power of the techonology. If you have any questions, feel free to contanct me at the email listed.</p>
+    </div>  
+  </div>
+</div>
+  
+{% endblock %}

@@ -19,18 +19,18 @@ class ProjectAdmin(admin.ModelAdmin):
     filter_horizontal = ('team_members', 'approvers', 'webpages')
 
     fieldsets = (
-        (None, {
-            'fields': ('name', 'start_date', 'end_date')
-        }),
-        ('People Involved', {
-            'fields': ('team_members', 'approvers'),
-        }),
-        ('Project Webpages', {
-            'fields': ('webpages',),
-        }),
-        ('PDF Links', {
-            'fields': ('email_pdf_url', 'comparison_pdf_url'),
-        }),
-    )
+    (None, {
+        'fields': ('name', 'description', 'start_date', 'end_date')
+    }),
+    ('People Involved', {
+        'fields': ('team_members', 'approvers'),
+    }),
+    ('Project Webpages', {
+        'fields': ('webpages',),
+    }),
+    ('PDF Links', {
+        'fields': ('email_pdf_url', 'comparison_pdf_url'),
+    }),
+)
 
 

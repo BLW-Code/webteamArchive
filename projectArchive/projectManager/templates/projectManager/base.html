@@ -2,6 +2,7 @@
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Project Archive{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'projectManager/bootstrap-5.3.7/css/bootstrap.min.css' %}">
@@ -19,7 +20,7 @@
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav align-items-center w-100">
+                <ul class="navbar-nav align-items-lg-center w-100">
                     <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">Home</a>
                     </li>
@@ -29,7 +30,7 @@
                     <li class="nav-item">
                     <a class="nav-link" href="#">Help</a>
                     </li>
-                    <li class="nav-item ms-auto">
+                    <li class="nav-item ms-lg-auto">
                     <a class="nav-link link-light d-flex align-items-center" href="{% url 'add_project' %}"><span class="pe-2">New Project</span> <i class="bi bi-plus-circle fs-3"></i></a>
                     </li>
                 </ul>

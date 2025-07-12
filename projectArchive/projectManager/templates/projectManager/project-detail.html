@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-12 col-lg-8">
             <h2>Project Description</h2>
-            <p>This is placeholder text</p>
+            <p>{{ project.description|linebreaksbr }}</p>
         </div>
         <div class="col-12 col-lg-4">
             <h2>Project Contributors</h3>
@@ -36,11 +36,11 @@
             <h2>Supporting Documentation</h2>
             {% endif %}
             {% if project.email_pdf_url %}
-            <p><a href="{{ project.email_pdf_url }}" target="_blank">View Email PDF</a></p>
+            <p><a class="btn btn-primary w-100" href="{{ project.email_pdf_url }}" target="_blank">View Email PDF</a></p>
             {% endif %}
 
             {% if project.comparison_pdf_url %}
-            <p><a href="{{ project.comparison_pdf_url }}" target="_blank">View Comparison PDF</a></p>
+            <p><a class="btn btn-primary w-100" href="{{ project.comparison_pdf_url }}" target="_blank">View Comparison PDF</a></p>
             {% endif %}
         </div>
         <div class="col-12">

@@ -41,6 +41,9 @@ class AllProjectsView(generic.ListView):
     def get_queryset(self):
         return Project.objects.order_by("-end_date")
 
+class AboutDeveloperView(generic.TemplateView):
+    template_name="projectManager/about.html"
+
 class ProjectDetailView(generic.DetailView):
     model = Project
     template_name = 'projectManager/project-detail.html'

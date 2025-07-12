@@ -11,19 +11,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-6 col-lg-4">
-                <a href="#" class="btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                <a href="{% url 'add_project' %}" class="btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
                     <i class="bi bi-plus-circle fs-2"></i>
                     <h2>Add a New Project</h2>
                 </a>
             </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <a href="#" class=" btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                <a href="{% url 'all_projects' %}" class=" btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
                     <i class="bi bi-search fs-2"></i>
                     <h2>Find a Project</h2>
                 </a>
             </div>
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
                 <a href="#" class="btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
                     <i class="bi bi-file-text fs-2"></i>
                     <h2>Get Help with Projects</h2>
@@ -62,7 +62,7 @@
         </div>
          <div class="row mt-5">
             <div class="col-12">
-            <h2 class="text-center fs-1 mb-3">Top Team Members</h2>
+            <h2 class="text-center fs-1 mb-3">Top Contributors</h2>
             <div class="row row-cols-1 row-cols-md-3 g-3">
                 {% for person in top_contributors %}
                 <div class="col">
