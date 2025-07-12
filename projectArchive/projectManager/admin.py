@@ -3,8 +3,8 @@ from .models import Person, Webpage, Project
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email')
-    search_fields = ('name', 'email')
+    list_display = ('first_name', 'last_name', 'email')
+    search_fields = ('first_name', 'last_name', 'email')
 
 @admin.register(Webpage)
 class WebpageAdmin(admin.ModelAdmin):
@@ -32,4 +32,5 @@ class ProjectAdmin(admin.ModelAdmin):
             'fields': ('email_pdf_url', 'comparison_pdf_url'),
         }),
     )
+
 

@@ -1,7 +1,7 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.urls import reverse
 from django.forms import formset_factory
+from django.db.models import Count
 from .forms import ProjectForm, PersonEmailForm, WebpageURLForm
 from .models import Person, Project, Webpage
 
@@ -13,6 +13,25 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         return Project.objects.order_by("-end_date")[:5]
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['top_contributors'] = (
+            Person.objects
+            .annotate(project_count=Count('projects_worked_on'))
+            .filter(project_count__gt=0)
+            .order_by('-project_count')[:5]
+        )
+
+        context['top_approvers'] = (
+            Person.objects
+            .annotate(approval_count=Count('projects_approved'))
+            .filter(approval_count__gt=0)
+            .order_by('-approval_count')[:5]
+        )
+
+        return context
 
 class AllProjectsView(generic.ListView):
     template_name = "projectManager/projects.html"
@@ -29,9 +48,7 @@ class ProjectDetailView(generic.DetailView):
 class AddProjectView(generic.FormView):
     template_name = 'projectManager/add-project.html'
     form_class = ProjectForm
-    success_url = reverse_lazy('project_success') 
-
-    # Formset classes with team_members instead of workers
+    
     team_member_formset_class = formset_factory(
         PersonEmailForm,
         extra=0,
@@ -84,20 +101,14 @@ class AddProjectView(generic.FormView):
                 if f.cleaned_data:
                     email = f.cleaned_data.get('email')
                     if email:
-                        person, _ = Person.objects.get_or_create(
-                            email=email,
-                            defaults={'name': email.split('@')[0]}
-                        )
-                        project.team_members.add(person)  # Change 'workers' here if you renamed the field in your model
+                        person, _ = Person.objects.get_or_create(email=email, defaults={'name': email.split('@')[0]})
+                        project.team_members.add(person)
 
             for f in approver_formset:
                 if f.cleaned_data:
                     email = f.cleaned_data.get('email')
                     if email:
-                        person, _ = Person.objects.get_or_create(
-                            email=email,
-                            defaults={'name': email.split('@')[0]}
-                        )
+                        person, _ = Person.objects.get_or_create(email=email, defaults={'name': email.split('@')[0]})
                         project.approvers.add(person)
 
             for f in webpage_formset:
@@ -107,6 +118,8 @@ class AddProjectView(generic.FormView):
                         webpage, _ = Webpage.objects.get_or_create(url=url)
                         project.webpages.add(webpage)
 
+            # Redirect to the new project's detail page
+            self.success_url = reverse('project_detail', kwargs={'pk': project.pk}) + '?success=1'
             return super().form_valid(form)
         else:
             context = self.get_context_data(form=form)

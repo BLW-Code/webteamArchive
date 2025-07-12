@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Project Archive{% endblock %}</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'projectManager/bootstrap-5.1.3/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href=" {% static 'projectManager\bootstrap-icons\bootstrap-icons.min.css' %}">
-    <script src="{% static 'projectManager/bootstrap-5.1.3/js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'projectManager/bootstrap-5.3.7/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href=" {% static 'projectManager/bootstrap-icons/bootstrap-icons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'projectManager/css/styles.css' %}">
+    <script src="{% static 'projectManager/bootstrap-5.3.7/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'projectManager/js/scripts.js'%}"></script>
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-light navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Web Team Project Archive</a>
+<body class="d-flex flex-column h-100vh">
+    <header class="mb-5">
+        <nav class="navbar bg-black navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand fs-2" href="{% url 'index' %}"><i class="bi bi-lock-fill"></i>Web Team Project Archive</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav align-items-center w-100">
                     <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">Home</a>
                     </li>
@@ -28,8 +29,8 @@
                     <li class="nav-item">
                     <a class="nav-link" href="#">Help</a>
                     </li>
-                    <li>
-                    <a class="nav-link" href="{% url 'add_project' %}">New Project</a>
+                    <li class="nav-item ms-auto">
+                    <a class="nav-link link-light d-flex align-items-center" href="{% url 'add_project' %}"><span class="pe-2">New Project</span> <i class="bi bi-plus-circle fs-3"></i></a>
                     </li>
                 </ul>
                 </div>
@@ -37,14 +38,16 @@
         </nav>
     </header>
 
-    <main>
+    <main class="mb-5">
         {% block content %}
         <!-- Content from child templates will appear here -->
         {% endblock %}
     </main>
 
-    <footer>
-        <p>&copy; 2025 Project Archive Inc.</p>
+    <footer class="bg-black mt-auto">
+        <div class="container py-3 text-center small">
+            <p class="mb-0">&copy; Braden Wilson | <a class="link-light" href="#">About the Developer</a></p>
+        </div>        
     </footer>
 </body>
 </html>

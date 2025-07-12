@@ -1,12 +1,108 @@
 {% extends 'projectManager/base.html' %}
 
-{% block title %}All Projects{% endblock %}
+{% block title %}Web Team Archive Home{% endblock %}
 
 {% block content %}
-  <h2>Welcome to the Archive</h2>
-  <ul>
-    {% for project in latest_project_list %}
-      <li><a href="{% url 'project_detail' project.pk %}">{{ project.name }} ({{ project.start_date }} - {{ project.end_date }})</a></li>
-    {% endfor %}
-  </ul>
+
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h1 class="text-center">Welcome to the Archive</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+                <a href="#" class="btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
+                    <i class="bi bi-plus-circle fs-2"></i>
+                    <h2>Add a New Project</h2>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <a href="#" class=" btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
+                    <i class="bi bi-search fs-2"></i>
+                    <h2>Find a Project</h2>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <a href="#" class="btn btn-dark w-100 h-100 border border-1 py-3 d-flex flex-column justify-content-between align-items-center">
+                    <i class="bi bi-file-text fs-2"></i>
+                    <h2>Get Help with Projects</h2>
+                </a>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="text-center fs-1">Latest Projects</h2>
+                <div class="accordion accordion-flush" id="accordionLatestProjects">
+                    {% for project in latest_project_list %}
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                        <button class="accordion-button collapsed fs-3" type="button" data-bs-toggle="collapse" data-bs-target="#accordionLatestProjects{{ forloop.counter }}" aria-expanded="false" aria-controls="accordionLatestProjects{{ forloop.counter }}">
+                            {{ project.name }}
+                        </button>
+                        </h3>
+                        <div id="accordionLatestProjects{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div class="row justify-content-between">
+                                <div class="col">
+                                    <div class="small">Start Date: {{ project.start_date|date:"Y-m-d" }}</div>
+                                    <div class="small">End Date: {{ project.end_date|date:"Y-m-d" }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <a class="btn btn-primary" href="{% url 'project_detail' project.pk %}">View Project Details</a>
+                                </div>
+                            </div>                         
+                            
+                        </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+         <div class="row mt-5">
+            <div class="col-12">
+            <h2 class="text-center fs-1 mb-3">Top Team Members</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+                {% for person in top_contributors %}
+                <div class="col">
+                    <div class="card h-100">
+                    <div class="card-header bg-primary text-white text-center">
+                        <strong>{{ person.first_name|slice:":1" }}{{ person.last_name|slice:":1" }}</strong>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ person.first_name }} {{ person.last_name }}</h5>
+                        <p class="card-text">{{ person.project_count }} project{{ person.project_count|pluralize }}</p>
+                    </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No team members found.</p>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+            <h2 class="text-center fs-1 mb-3">Top Approvers</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+                {% for person in top_approvers %}
+                <div class="col">
+                    <div class="card h-100">
+                    <div class="card-header bg-success text-white text-center">
+                        <strong>{{ person.first_name|slice:":1" }}{{ person.last_name|slice:":1" }}</strong>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ person.first_name }} {{ person.last_name }}</h5>
+                        <p class="card-text">{{ person.approval_count }} approval{{ person.approval_count|pluralize }}</p>
+                    </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No approvers found.</p>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+    </div>    
 {% endblock %}
