@@ -16,18 +16,20 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date', 'end_date')
     search_fields = ('name',)
     list_filter = ('start_date', 'end_date')
-    filter_horizontal = ('workers', 'approvers', 'webpages')  # Makes multi-select UI cleaner
+    filter_horizontal = ('team_members', 'approvers', 'webpages')
+
     fieldsets = (
         (None, {
             'fields': ('name', 'start_date', 'end_date')
         }),
         ('People Involved', {
-            'fields': ('workers', 'approvers'),
+            'fields': ('team_members', 'approvers'),
         }),
         ('Project Webpages', {
             'fields': ('webpages',),
         }),
-        ('Documents', {
-            'fields': ('email_pdf', 'comparison_pdf'),
+        ('PDF Links', {
+            'fields': ('email_pdf_url', 'comparison_pdf_url'),
         }),
     )
+

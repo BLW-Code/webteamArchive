@@ -1,0 +1,59 @@
+{% extends 'projectManager/base.html' %}
+{% load static %}
+
+{% block title %}Add New Project{% endblock %}
+
+{% block content %}
+  <h2>Add a New Project</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <!-- Workers -->
+    <fieldset>
+      <legend>Team Members</legend>
+      {{ team_member_formset.management_form }}
+      <div id="team-member-forms">
+        {% for form in team_member_formset %}
+          <div class="team-members-form team-member-form">
+            {{ form.as_p }}
+            <button type="button" class="remove-team_members">Remove</button>
+          </div>
+        {% endfor %}
+      </div>
+      <button type="button" id="add-team-member">Add Team Member</button>
+    </fieldset>
+    <!-- Approvers -->
+    <fieldset>
+      <legend>Approvers</legend>
+      {{ approver_formset.management_form }}
+      <div id="approver-forms">
+        {% for form in approver_formset %}
+          <div class="approvers-form approver-form">
+            {{ form.as_p }}
+            <button type="button" class="remove-approvers">Remove</button>
+          </div>
+        {% endfor %}
+      </div>
+      <button type="button" id="add-approver">Add Approver</button>
+    </fieldset>
+
+    <!-- Webpages -->
+    <fieldset>
+      <legend>Webpages</legend>
+      {{ webpage_formset.management_form }}
+      <div id="webpage-forms">
+        {% for form in webpage_formset %}
+          <div class="webpages-form webpage-form">
+            {{ form.as_p }}
+            <button type="button" class="remove-webpages">Remove</button>
+          </div>
+        {% endfor %}
+      </div>
+      <button type="button" id="add-webpage">Add Webpage</button>
+    </fieldset>
+
+    <button type="submit">Submit Project</button>
+  </form>
+{% endblock %}
