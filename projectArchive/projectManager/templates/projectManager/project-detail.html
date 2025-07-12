@@ -1,0 +1,70 @@
+{% extends "projectManager/base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>{{ project.name }}</h1>
+    <p><strong>Start Date:</strong> {{ project.start_date }}</p>
+    <p><strong>End Date:</strong> {{ project.end_date }}</p>
+
+    <h3>Team Members</h3>
+    <ul>
+      {% for person in project.team_members.all %}
+        <li>{{ person.name }} &lt;{{ person.email }}&gt;</li>
+      {% empty %}
+        <li>No team members listed.</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Approvers</h3>
+    <ul>
+      {% for person in project.approvers.all %}
+        <li>{{ person.name }} &lt;{{ person.email }}&gt;</li>
+      {% empty %}
+        <li>No approvers listed.</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Webpages</h3>
+    <ul>
+      {% for page in project.webpages.all %}
+        <li><a href="{{ page.url }}" target="_blank">{{ page.url }}</a></li>
+      {% empty %}
+        <li>No webpages listed.</li>
+      {% endfor %}
+    </ul>
+
+    {% if project.email_pdf_url %}
+      <p><a href="{{ project.email_pdf_url }}" target="_blank">View Email PDF</a></p>
+    {% endif %}
+
+    {% if project.comparison_pdf_url %}
+      <p><a href="{{ project.comparison_pdf_url }}" target="_blank">View Comparison PDF</a></p>
+    {% endif %}
+  </div>
+
+  <!-- Bootstrap Modal -->
+  {% if request.GET.success == '1' %}
+    <div class="modal fade" id="projectCreatedModal" tabindex="-1" aria-labelledby="projectCreatedLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="projectCreatedLabel">Project Created</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            The project has been successfully created.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const modal = new bootstrap.Modal(document.getElementById('projectCreatedModal'));
+        modal.show();
+      });
+    </script>
+  {% endif %}
+{% endblock %}

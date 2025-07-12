@@ -13,11 +13,23 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         return Project.objects.order_by("-end_date")[:5]
+
+class AllProjectsView(generic.ListView):
+    template_name = "projectManager/projects.html"
+    context_object_name = "project_list"
+
+    def get_queryset(self):
+        return Project.objects.order_by("-end_date")
+
+class ProjectDetailView(generic.DetailView):
+    model = Project
+    template_name = 'projectManager/project-detail.html'
+    context_object_name = 'project'
     
 class AddProjectView(generic.FormView):
     template_name = 'projectManager/add-project.html'
     form_class = ProjectForm
-    success_url = reverse_lazy('project_success')  # Update as needed
+    success_url = reverse_lazy('project_success') 
 
     # Formset classes with team_members instead of workers
     team_member_formset_class = formset_factory(
