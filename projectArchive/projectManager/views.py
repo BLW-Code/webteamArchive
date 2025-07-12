@@ -2,6 +2,7 @@ from django.views import generic
 from django.urls import reverse
 from django.forms import formset_factory
 from django.db.models import Count
+import requests
 from .forms import ProjectForm, PersonEmailForm, WebpageURLForm
 from .models import Person, Project, Webpage
 
@@ -43,7 +44,22 @@ class AllProjectsView(generic.ListView):
 class ProjectDetailView(generic.DetailView):
     model = Project
     template_name = 'projectManager/project-detail.html'
-    context_object_name = 'project'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Check which webpages are reachable
+        valid_pages = []
+        for page in self.object.webpages.all():
+            try:
+                response = requests.head(page.url, timeout=5)
+                if response.status_code == 200:
+                    valid_pages.append(page)
+            except requests.RequestException:
+                pass  # Ignore unreachable pages
+
+        context['valid_webpages'] = valid_pages
+        return context
     
 class AddProjectView(generic.FormView):
     template_name = 'projectManager/add-project.html'
