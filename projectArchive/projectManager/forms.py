@@ -1,14 +1,44 @@
 from django import forms
+from .models import Project, Person, Webpage
 
-class ProjectForm(forms.Form):
-    name = forms.CharField(label="Project Name", max_length=200)
-    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    email_pdf_url = forms.URLField(label="Email PDF URL", required=False)
-    comparison_pdf_url = forms.URLField(label="Comparison PDF URL", required=False)
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = [
+            'name',
+            'start_date',
+            'end_date',
+            'description',
+            'email_pdf_url',
+            'comparison_pdf_url',
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'email_pdf_url': forms.URLInput(attrs={'class': 'form-control'}),
+            'comparison_pdf_url': forms.URLInput(attrs={'class': 'form-control'}),
+        }
 
-class PersonEmailForm(forms.Form):
-    email = forms.EmailField(label="Email")
+class PersonEmailForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = ['email']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'email': 'Email',
+        }
 
-class WebpageURLForm(forms.Form):
-    url = forms.URLField(label="Webpage URL")
+class WebpageURLForm(forms.ModelForm):
+    class Meta:
+        model = Webpage
+        fields = ['url']
+        widgets = {
+            'url': forms.URLInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'url': 'Webpage URL',
+        }

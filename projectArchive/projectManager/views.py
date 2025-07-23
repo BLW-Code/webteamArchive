@@ -1,6 +1,7 @@
 from django.views import generic
 from django.urls import reverse
-from django.forms import formset_factory
+from django.forms import formset_factory, modelformset_factory
+from django import forms
 from django.db.models import Count
 import requests
 from .forms import ProjectForm, PersonEmailForm, WebpageURLForm
@@ -68,36 +69,48 @@ class AddProjectView(generic.FormView):
     template_name = 'projectManager/add-project.html'
     form_class = ProjectForm
     
-    team_member_formset_class = formset_factory(
-        PersonEmailForm,
+    # Use modelformset_factory for your ModelForms
+    team_member_formset_class = modelformset_factory(
+        Person,
+        form=PersonEmailForm,
         extra=0,
         min_num=1,
-        validate_min=True
+        validate_min=True,
+        fields=['email'],
+        widgets={'email': forms.EmailInput(attrs={'class': 'form-control'})}
     )
-    approver_formset_class = formset_factory(
-        PersonEmailForm,
+
+    approver_formset_class = modelformset_factory(
+        Person,
+        form=PersonEmailForm,
         extra=0,
         min_num=1,
-        validate_min=True
+        validate_min=True,
+        fields=['email'],
+        widgets={'email': forms.EmailInput(attrs={'class': 'form-control'})}
     )
-    webpage_formset_class = formset_factory(
-        WebpageURLForm,
+
+    webpage_formset_class = modelformset_factory(
+        Webpage,
+        form=WebpageURLForm,
         extra=0,
         min_num=1,
-        validate_min=True
+        validate_min=True,
+        fields=['url'],
+        widgets={'url': forms.URLInput(attrs={'class': 'form-control'})}
     )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         if self.request.POST:
-            context['team_member_formset'] = self.team_member_formset_class(self.request.POST, prefix='team_members')
-            context['approver_formset'] = self.approver_formset_class(self.request.POST, prefix='approvers')
-            context['webpage_formset'] = self.webpage_formset_class(self.request.POST, prefix='webpages')
+            context['team_member_formset'] = self.team_member_formset_class(self.request.POST, queryset=Person.objects.none(), prefix='team_members')
+            context['approver_formset'] = self.approver_formset_class(self.request.POST, queryset=Person.objects.none(), prefix='approvers')
+            context['webpage_formset'] = self.webpage_formset_class(self.request.POST, queryset=Webpage.objects.none(), prefix='webpages')
         else:
-            context['team_member_formset'] = self.team_member_formset_class(prefix='team_members')
-            context['approver_formset'] = self.approver_formset_class(prefix='approvers')
-            context['webpage_formset'] = self.webpage_formset_class(prefix='webpages')
+            context['team_member_formset'] = self.team_member_formset_class(queryset=Person.objects.none(), prefix='team_members')
+            context['approver_formset'] = self.approver_formset_class(queryset=Person.objects.none(), prefix='approvers')
+            context['webpage_formset'] = self.webpage_formset_class(queryset=Webpage.objects.none(), prefix='webpages')
 
         return context
 

@@ -1,90 +1,103 @@
-function setupDynamicFormset(containerId, addBtnId, formPrefix) {
-    const container = document.getElementById(containerId);
-    const addBtn = document.getElementById(addBtnId);
-    const totalFormsInput = document.querySelector(`input[name="${formPrefix}-TOTAL_FORMS"]`);
+function setupDynamicFormset(containerId, formPrefix) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
 
-    // Add new form
-    addBtn.addEventListener("click", () => {
-        const formCount = parseInt(totalFormsInput.value);
-        const firstForm = container.querySelector(`.${formPrefix}-form`);
-        if (!firstForm) return;
+  const totalFormsInput = document.querySelector(`input[name="${formPrefix}-TOTAL_FORMS"]`);
+  if (!totalFormsInput) return;
 
-        const newForm = firstForm.cloneNode(true);
+  const formClass = formPrefix.replace(/_/g, '-') + '-form';  // e.g. team-members-form
 
-        // Clear input values
-        newForm.querySelectorAll("input").forEach(input => {
-            if (input.type === "checkbox" || input.type === "radio") {
-                input.checked = false;
-            } else {
-                input.value = "";
-            }
-        });
-
-        // Update names, ids, and labels
-        updateFormAttributes(newForm, formPrefix, formCount);
-
-        container.appendChild(newForm);
-        totalFormsInput.value = formCount + 1;
-
-        attachRemoveButtons();
-    });
-
-    function attachRemoveButtons() {
-        const forms = container.querySelectorAll(`.${formPrefix}-form`);
-        const removeButtons = container.querySelectorAll(`.remove-${formPrefix}`);
-
-        if (forms.length <= 1) {
-            removeButtons.forEach(btn => btn.classList.add('d-none'));
+  function updateAllForms() {
+    const forms = container.querySelectorAll(`.${formClass}`);
+    forms.forEach((form, index) => {
+      const heading = form.querySelector('.form-heading');
+      if (heading) {
+        const words = formPrefix.split('_');
+        const singularWords = [...words];
+        const lastWord = singularWords.pop();
+        if (lastWord.endsWith('s')) {
+          singularWords.push(lastWord.slice(0, -1));
         } else {
-            removeButtons.forEach(btn => btn.classList.remove('d-none'));
+          singularWords.push(lastWord);
         }
+        const displayName = singularWords.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        heading.textContent = `${displayName} ${index + 1}`;
+      }
+      updateFormAttributes(form, formPrefix, index);
+    });
+    totalFormsInput.value = forms.length;
 
-        removeButtons.forEach(btn => {
-            btn.onclick = () => {
-                if (forms.length > 1) {
-                    btn.closest(`.${formPrefix}-form`).remove();
-                    updateAllFormIndexes();
-                    attachRemoveButtons();  // update visibility after removal
-                }
-            };
-        });
+    const removeButtons = container.querySelectorAll(`.remove-${formPrefix}`);
+    if (forms.length <= 1) {
+      removeButtons.forEach(btn => btn.classList.add('d-none'));
+    } else {
+      removeButtons.forEach(btn => btn.classList.remove('d-none'));
+    }
+  }
+
+  function updateFormAttributes(form, prefix, index) {
+    form.querySelectorAll('input, label').forEach(el => {
+      if (el.name) {
+        el.name = el.name.replace(new RegExp(`${prefix}-\\d+`), `${prefix}-${index}`);
+      }
+      if (el.id) {
+        const newId = el.id.replace(new RegExp(`${prefix}-\\d+`), `${prefix}-${index}`);
+        el.id = newId;
+
+        if (el.tagName.toLowerCase() === 'label' && el.htmlFor) {
+          el.htmlFor = newId;
+        }
+      }
+    });
+  }
+
+  container.addEventListener('click', (event) => {
+    const target = event.target.closest('button'); // button or icon inside
+    if (!target) return;
+
+    if (target.classList.contains(`add-${formPrefix}`)) {
+      event.preventDefault();
+
+      const currentForm = target.closest(`.${formClass}`);
+      if (!currentForm) return;
+
+      const forms = container.querySelectorAll(`.${formClass}`);
+      const formCount = forms.length;
+
+      const firstForm = forms[0];
+      const newForm = firstForm.cloneNode(true);
+
+      newForm.querySelectorAll('input').forEach(input => {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+          input.checked = false;
+        } else {
+          input.value = '';
+        }
+      });
+
+      currentForm.after(newForm);
+      updateAllForms();
     }
 
-    function updateFormAttributes(form, formPrefix, index) {
-        // Update all inputs and labels inside the form
-        form.querySelectorAll("input, label").forEach(el => {
-            // Update 'name' attribute
-            if (el.name) {
-                el.name = el.name.replace(new RegExp(`${formPrefix}-\\d+`), `${formPrefix}-${index}`);
-            }
-            // Update 'id' attribute
-            if (el.id) {
-                const oldId = el.id;
-                const newId = oldId.replace(new RegExp(`${formPrefix}-\\d+`), `${formPrefix}-${index}`);
-                el.id = newId;
+    if (target.classList.contains(`remove-${formPrefix}`)) {
+      event.preventDefault();
 
-                // If this is a label, update its 'for' attribute too
-                if (el.tagName.toLowerCase() === 'label' && el.htmlFor) {
-                    el.htmlFor = newId;
-                }
-            }
-        });
+      const currentForm = target.closest(`.${formClass}`);
+      if (!currentForm) return;
+
+      const forms = container.querySelectorAll(`.${formClass}`);
+      if (forms.length <= 1) return;
+
+      currentForm.remove();
+      updateAllForms();
     }
+  });
 
-    function updateAllFormIndexes() {
-        const forms = container.querySelectorAll(`.${formPrefix}-form`);
-        forms.forEach((form, index) => {
-            updateFormAttributes(form, formPrefix, index);
-        });
-        totalFormsInput.value = forms.length;
-    }
-
-    // Initialize remove buttons on page load
-    attachRemoveButtons();
+  updateAllForms();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    setupDynamicFormset("team-member-forms", "add-team-member", "team_members");
-    setupDynamicFormset("approver-forms", "add-approver", "approvers");
-    setupDynamicFormset("webpage-forms", "add-webpage", "webpages");
+  setupDynamicFormset("team-member-forms", "team_members");
+  setupDynamicFormset("approver-forms", "approvers");
+  setupDynamicFormset("webpage-forms", "webpages");
 });

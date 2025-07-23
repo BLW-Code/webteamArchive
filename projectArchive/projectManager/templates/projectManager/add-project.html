@@ -1,59 +1,108 @@
 {% extends 'projectManager/base.html' %}
-{% load static %}
-
-{% block title %}Add New Project{% endblock %}
 
 {% block content %}
-  <h2>Add a New Project</h2>
+<div class="container">
+  <h1>Add New Project</h1>
 
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
 
-    <!-- Workers -->
-    <fieldset>
-      <legend>Team Members</legend>
-      {{ team_member_formset.management_form }}
-      <div id="team-member-forms">
-        {% for form in team_member_formset %}
-          <div class="team-members-form team-member-form">
-            {{ form.as_p }}
-            <button type="button" class="remove-team_members">Remove</button>
+    <!-- Project Fields -->
+    <div class="mb-3">
+      <label for="{{ form.name.id_for_label }}" class="form-label">Project Name</label>
+      {{ form.name }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.start_date.id_for_label }}" class="form-label">Start Date</label>
+      {{ form.start_date }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.end_date.id_for_label }}" class="form-label">End Date</label>
+      {{ form.end_date }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+      {{ form.description }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.email_pdf_url.id_for_label }}" class="form-label">Email PDF URL</label>
+      {{ form.email_pdf_url }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.comparison_pdf_url.id_for_label }}" class="form-label">Comparison PDF URL</label>
+      {{ form.comparison_pdf_url }}
+    </div>
+
+    <hr>
+
+    <!-- Team Members -->
+    <h2>Team Members</h2>
+    {{ team_member_formset.management_form }}
+    <div id="team-member-forms">
+      {% for form in team_member_formset %}
+        <div class="dynamic-form team-members-form">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="form-heading">Team Member {{ forloop.counter }}</h3>
+            <div>
+              <button type="button" class="add-team_members btn btn-sm btn-success"><i class="bi bi-plus-lg fs-5"></i></button>
+              <button type="button" class="remove-team_members btn btn-sm btn-danger"><i class="bi bi-x-lg fs-5"></i></button>
+            </div>
+          </div>          
+          <div class="mb-3">
+            {{ form.email.label_tag }} {{ form.email }}
           </div>
-        {% endfor %}
-      </div>
-      <button type="button" id="add-team-member">Add Team Member</button>
-    </fieldset>
+        </div>
+      {% endfor %}
+    </div>
+
+    <hr>
+
     <!-- Approvers -->
-    <fieldset>
-      <legend>Approvers</legend>
-      {{ approver_formset.management_form }}
-      <div id="approver-forms">
-        {% for form in approver_formset %}
-          <div class="approvers-form approver-form">
-            {{ form.as_p }}
-            <button type="button" class="remove-approvers">Remove</button>
+    <h2>Approvers</h2>
+    {{ approver_formset.management_form }}
+    <div id="approver-forms">
+      {% for form in approver_formset %}
+        <div class="dynamic-form approvers-form">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="form-heading">Approver {{ forloop.counter }}</h3>
+            <div>
+              <button type="button" class="add-approvers btn btn-sm btn-success"><i class="bi bi-plus-lg fs-5"></i></button>
+              <button type="button" class="remove-approvers btn btn-sm btn-danger"><i class="bi bi-x-lg fs-5"></i></button>
+            </div>
+          </div> 
+          <div class="mb-3">
+            {{ form.email.label_tag }} {{ form.email }}
           </div>
-        {% endfor %}
-      </div>
-      <button type="button" id="add-approver">Add Approver</button>
-    </fieldset>
+        </div>
+      {% endfor %}
+    </div>
+
+    <hr>
 
     <!-- Webpages -->
-    <fieldset>
-      <legend>Webpages</legend>
-      {{ webpage_formset.management_form }}
-      <div id="webpage-forms">
-        {% for form in webpage_formset %}
-          <div class="webpages-form webpage-form">
-            {{ form.as_p }}
-            <button type="button" class="remove-webpages">Remove</button>
+    <h2>Webpages</h2>
+    {{ webpage_formset.management_form }}
+    <div id="webpage-forms">
+      {% for form in webpage_formset %}
+        <div class="dynamic-form webpages-form">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="form-heading">Webpage {{ forloop.counter }}</h3>
+            <div>
+              <button type="button" class="add-webpages btn btn-sm btn-success"><i class="bi bi-plus-lg fs-5"></i></button>
+              <button type="button" class="remove-webpages btn btn-sm btn-danger"><i class="bi bi-x-lg fs-5"></i></button>
+            </div>
+          </div> 
+          <div class="mb-3">
+            {{ form.url.label_tag }} {{ form.url }}
           </div>
-        {% endfor %}
-      </div>
-      <button type="button" id="add-webpage">Add Webpage</button>
-    </fieldset>
+        </div>
+      {% endfor %}
+    </div>
 
-    <button type="submit">Submit Project</button>
+    <hr>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary">Submit Project</button>
   </form>
+</div>
 {% endblock %}
