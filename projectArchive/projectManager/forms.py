@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, Person, Webpage
+from .models import Project
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -21,34 +21,32 @@ class ProjectForm(forms.ModelForm):
             'comparison_pdf_url': forms.URLInput(attrs={'class': 'form-control'}),
         }
 
-class PersonForm(forms.ModelForm):
-    class Meta:
-        model = Person
-        fields = ['first_name', 'last_name', 'email']
-        widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': ''}),
-        }
-        labels = {
-            'first_name': 'First Name',
-            'last_name': 'Last Name',
-            'email': 'Email',
-        }
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.label_suffix = '' 
-class WebpageURLForm(forms.ModelForm):
-    class Meta:
-        model = Webpage
-        fields = ['url']
-        widgets = {
-            'url': forms.URLInput(attrs={'class': 'form-control'}),
-        }
-        labels = {
-            'url': 'Webpage URL',
-        }
+class PersonForm(forms.Form):
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label="First Name"
+    )
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label="Last Name"
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        label="Email"
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.label_suffix = '' 
+        self.label_suffix = ''
+
+class WebpageURLForm(forms.Form):
+    url = forms.URLField(
+        widget=forms.URLInput(attrs={'class': 'form-control'}),
+        label="Webpage URL"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ''

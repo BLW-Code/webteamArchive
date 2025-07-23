@@ -68,15 +68,13 @@ class ProjectDetailView(generic.DetailView):
 class AddProjectView(generic.FormView):
     template_name = 'projectManager/add-project.html'
     form_class = ProjectForm
-    
-    # Use formset_factory with your ModelForms to include all fields
-    team_member_formset_class = formset_factory(PersonForm, extra=1, min_num=1, validate_min=True)
-    approver_formset_class = formset_factory(PersonForm, extra=1, min_num=1, validate_min=True)
-    webpage_formset_class = formset_factory(WebpageURLForm, extra=1, min_num=1, validate_min=True)
+
+    team_member_formset_class = formset_factory(PersonForm, extra=0, min_num=1, validate_min=True)
+    approver_formset_class = formset_factory(PersonForm, extra=0, min_num=1, validate_min=True)
+    webpage_formset_class = formset_factory(WebpageURLForm, extra=0, min_num=1, validate_min=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         if self.request.POST:
             context['team_member_formset'] = self.team_member_formset_class(self.request.POST, prefix='team_members')
             context['approver_formset'] = self.approver_formset_class(self.request.POST, prefix='approvers')
@@ -85,7 +83,6 @@ class AddProjectView(generic.FormView):
             context['team_member_formset'] = self.team_member_formset_class(prefix='team_members')
             context['approver_formset'] = self.approver_formset_class(prefix='approvers')
             context['webpage_formset'] = self.webpage_formset_class(prefix='webpages')
-
         return context
 
     def form_valid(self, form):
@@ -105,41 +102,32 @@ class AddProjectView(generic.FormView):
             )
 
             for f in team_member_formset:
-                if f.cleaned_data:
-                    first_name = f.cleaned_data.get('first_name')
-                    last_name = f.cleaned_data.get('last_name')
-                    email = f.cleaned_data.get('email')
-                    if email:
-                        person, _ = Person.objects.get_or_create(
-                            email=email,
-                            defaults={
-                                'first_name': first_name or '',
-                                'last_name': last_name or '',
-                            }
-                        )
-                        project.team_members.add(person)
+                email = f.cleaned_data.get('email')
+                first_name = f.cleaned_data.get('first_name')
+                last_name = f.cleaned_data.get('last_name')
+                if email:
+                    person, _ = Person.objects.get_or_create(
+                        email=email,
+                        defaults={'first_name': first_name or '', 'last_name': last_name or ''}
+                    )
+                    project.team_members.add(person)
 
             for f in approver_formset:
-                if f.cleaned_data:
-                    first_name = f.cleaned_data.get('first_name')
-                    last_name = f.cleaned_data.get('last_name')
-                    email = f.cleaned_data.get('email')
-                    if email:
-                        person, _ = Person.objects.get_or_create(
-                            email=email,
-                            defaults={
-                                'first_name': first_name or '',
-                                'last_name': last_name or '',
-                            }
-                        )
-                        project.approvers.add(person)
+                email = f.cleaned_data.get('email')
+                first_name = f.cleaned_data.get('first_name')
+                last_name = f.cleaned_data.get('last_name')
+                if email:
+                    person, _ = Person.objects.get_or_create(
+                        email=email,
+                        defaults={'first_name': first_name or '', 'last_name': last_name or ''}
+                    )
+                    project.approvers.add(person)
 
             for f in webpage_formset:
-                if f.cleaned_data:
-                    url = f.cleaned_data.get('url')
-                    if url:
-                        webpage, _ = Webpage.objects.get_or_create(url=url)
-                        project.webpages.add(webpage)
+                url = f.cleaned_data.get('url')
+                if url:
+                    webpage, _ = Webpage.objects.get_or_create(url=url)
+                    project.webpages.add(webpage)
 
             self.success_url = reverse('project_detail', kwargs={'pk': project.pk}) + '?success=1'
             return super().form_valid(form)
