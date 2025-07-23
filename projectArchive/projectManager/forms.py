@@ -21,17 +21,23 @@ class ProjectForm(forms.ModelForm):
             'comparison_pdf_url': forms.URLInput(attrs={'class': 'form-control'}),
         }
 
-class PersonEmailForm(forms.ModelForm):
+class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
-        fields = ['email']
+        fields = ['first_name', 'last_name', 'email']
         widgets = {
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': ''}),
         }
         labels = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
             'email': 'Email',
         }
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = '' 
 class WebpageURLForm(forms.ModelForm):
     class Meta:
         model = Webpage
@@ -42,3 +48,7 @@ class WebpageURLForm(forms.ModelForm):
         labels = {
             'url': 'Webpage URL',
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = '' 

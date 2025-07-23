@@ -36,11 +36,11 @@
     <hr>
 
     <!-- Team Members -->
-    <h2>Team Members</h2>
+    <h2 class="mb-4">Team Members</h2>
     {{ team_member_formset.management_form }}
     <div id="team-member-forms">
       {% for form in team_member_formset %}
-        <div class="dynamic-form team-members-form">
+        <div class="dynamic-form team-members-form mb-4">
           <div class="d-flex justify-content-between align-items-center">
             <h3 class="form-heading">Team Member {{ forloop.counter }}</h3>
             <div>
@@ -49,7 +49,16 @@
             </div>
           </div>          
           <div class="mb-3">
-            {{ form.email.label_tag }} {{ form.email }}
+            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+            {{ form.first_name }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+            {{ form.last_name }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+            {{ form.email }}
           </div>
         </div>
       {% endfor %}
@@ -58,21 +67,30 @@
     <hr>
 
     <!-- Approvers -->
-    <h2>Approvers</h2>
+    <h2 class="mb-4">Approvers</h2>
     {{ approver_formset.management_form }}
     <div id="approver-forms">
       {% for form in approver_formset %}
-        <div class="dynamic-form approvers-form">
+        <div class="dynamic-form approvers-form mb-4">
           <div class="d-flex justify-content-between align-items-center">
             <h3 class="form-heading">Approver {{ forloop.counter }}</h3>
             <div>
               <button type="button" class="add-approvers btn btn-sm btn-success"><i class="bi bi-plus-lg fs-5"></i></button>
               <button type="button" class="remove-approvers btn btn-sm btn-danger"><i class="bi bi-x-lg fs-5"></i></button>
             </div>
-          </div> 
-          <div class="mb-3">
-            {{ form.email.label_tag }} {{ form.email }}
           </div>
+          <div class="mb-3">
+            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+            {{ form.first_name }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+            {{ form.last_name }}
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+            {{ form.email }}
+          </div> 
         </div>
       {% endfor %}
     </div>
@@ -80,11 +98,11 @@
     <hr>
 
     <!-- Webpages -->
-    <h2>Webpages</h2>
+    <h2 class="mb-4">Webpages</h2>
     {{ webpage_formset.management_form }}
     <div id="webpage-forms">
       {% for form in webpage_formset %}
-        <div class="dynamic-form webpages-form">
+        <div class="dynamic-form webpages-form mb-4">
           <div class="d-flex justify-content-between align-items-center">
             <h3 class="form-heading">Webpage {{ forloop.counter }}</h3>
             <div>
@@ -93,7 +111,8 @@
             </div>
           </div> 
           <div class="mb-3">
-            {{ form.url.label_tag }} {{ form.url }}
+            <label for="{{ form.url.id_for_label }}" class="form-label">Webpage URL</label>
+            {{ form.url }}
           </div>
         </div>
       {% endfor %}

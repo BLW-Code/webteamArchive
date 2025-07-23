@@ -2,8 +2,8 @@ from django.db import models
 from django.urls import reverse
 
 class Person(models.Model):
-    first_name = models.CharField(max_length=50, default="First")
-    last_name = models.CharField(max_length=50, default="Last")
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
 
     def __str__(self):
