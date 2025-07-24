@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'projectManager/css/styles.css' %}">
     <script src="{% static 'projectManager/bootstrap-5.3.7/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'projectManager/js/scripts.js'%}"></script>
+    {% block extra_js %}{% endblock %}
 </head>
 <body class="d-flex flex-column h-100vh">
     <header class="mb-5">
@@ -34,7 +35,7 @@
                     <a class="nav-link" href="{% url 'all_projects' %}">Projects</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#">Help</a>
+                    <a class="nav-link" href="{% url 'documentation' %}">Help</a>
                     </li>
                     <li class="nav-item ms-lg-auto">
                     <a class="nav-link link-light d-flex align-items-center" href="{% url 'add_project' %}"><span class="pe-2">New Project</span> <i class="bi bi-plus-lg fs-3"></i></a>

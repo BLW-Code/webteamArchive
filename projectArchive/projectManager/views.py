@@ -45,6 +45,9 @@ class AllProjectsView(generic.ListView):
 class AboutDeveloperView(generic.TemplateView):
     template_name="projectManager/about.html"
 
+class Documenation(generic.TemplateView):
+    template_name="projectManager/documentation.html"
+
 class ProjectDetailView(generic.DetailView):
     model = Project
     template_name = 'projectManager/project-detail.html'

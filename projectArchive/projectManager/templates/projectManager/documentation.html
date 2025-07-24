@@ -1,0 +1,111 @@
+{% extends "projectManager/base.html" %}
+{% load static %}
+{% block title %}Documentation{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="mb-4">Web Team Project Archive Documentation</h1>
+
+  <section class="mb-5">
+    <h2>Overview</h2>
+    <p>
+      The Web Team Project Archive is a Django-based application designed to archive and manage details about web-related projects. The app supports the submission of project information, contributors, approvers, and related webpage links. It also includes tools to view, filter, and sort all submitted projects.
+    </p>
+  </section>
+
+  <section class="mb-5">
+    <h2>Project Submission Workflow</h2>
+    <ol>
+    <li>
+        <p>Users navigate to the Add Project Form.</p>
+        <img class="img-fluid" width="800" height="416" src="{% static 'projectManager/images/new-project.gif' %}">
+    </li>
+    <li>
+        <p>Users fill out the Add Project Form, entering core project details.</p>
+        <img class="img-fluid" width="800" height="416" src="{% static 'projectManager/images/project-details.gif' %}">
+    </li>
+      <li>
+        <p>Dynamic forms allow adding team members, approvers, and webpage URLs.</p>
+        <img class="img-fluid" width="800" height="416" src="{% static 'projectManager/images/dynamic-form.gif' %}">
+    </li>
+    <li>If a person or webpage already exists, the existing record is reused instead of creating a new one.</li>
+    <li><p>The form validates all data, including email uniqueness and URL duplication, before saving.</p>
+        <img class="img-fluid" width="800" height="416" src="{% static 'projectManager/images/submit.gif' %}">        
+    </li>
+    </ol>
+  </section>
+
+  <section class="mb-5">
+    <h2>Project Model Structure</h2>
+    <p>Each project includes the following fields:</p>
+    <ul>
+      <li><strong>Name</strong>: Project title</li>
+      <li><strong>Start/End Dates</strong>: Duration of the project</li>
+      <li><strong>Description</strong>: Optional text describing the project</li>
+      <li><strong>Team Members</strong>: Linked via a many-to-many relationship to Person</li>
+      <li><strong>Approvers</strong>: Also linked to Person via a separate many-to-many field</li>
+      <li><strong>Webpages</strong>: URLs related to the project, also many-to-many</li>
+      <li><strong>Email/Comparison PDF URLs</strong>: Optional links to supplementary materials</li>
+    </ul>
+  </section>
+
+  <section class="mb-5">
+    <h2>Person Model</h2>
+    <ul>
+      <li>First Name</li>
+      <li>Last Name</li>
+      <li>Email (must be unique)</li>
+    </ul>
+    <p>Each Person can be involved in multiple projects as either a team member or an approver.</p>
+  </section>
+
+  <section class="mb-5">
+    <h2>Webpage Model</h2>
+    <ul>
+      <li>URL (must be unique)</li>
+    </ul>
+    <p>Webpages are linked to one or more projects.</p>
+  </section>
+
+  <section class="mb-5">
+    <h2>Views</h2>
+    <ul>
+      <li><strong>Home Page</strong>: Displays recent projects and contributors</li>
+      <li><strong>All Projects</strong>: Table view of all projects, sortable and filterable</li>
+      <li><strong>Project Detail</strong>: Full information on a single project</li>
+      <li><strong>Add Project</strong>: Form to submit new project information</li>
+      <li><strong>About</strong>: Static info about the archive</li>
+      <li><strong>Documentation</strong>: This page</li>
+    </ul>
+  </section>
+
+  <section class="mb-5">
+    <h2>Dynamic Forms</h2>
+    <p>The Add Project form supports dynamic addition and removal of:</p>
+    <ul>
+      <li>Team members</li>
+      <li>Approvers</li>
+      <li>Webpages</li>
+    </ul>
+    <p>Validation ensures no duplicate emails or URLs are submitted.</p>
+  </section>
+
+  <section class="mb-5">
+    <h2>Technologies Used</h2>
+    <ul>
+      <li>Django (views, models, forms, and templates)</li>
+      <li>Bootstrap 5 for UI styling and responsiveness</li>
+      <li>JavaScript for dynamic form handling</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Future Enhancements</h2>
+    <ul>
+      <li>Search by person or webpage</li>
+      <li>Role tagging for team members and approvers</li>
+      <li>Export project data to CSV or PDF</li>
+      <li>Authentication and access control for project editing</li>
+    </ul>
+  </section>
+</div>
+{% endblock %}

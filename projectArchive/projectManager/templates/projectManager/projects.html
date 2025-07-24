@@ -1,12 +1,85 @@
 {% extends 'projectManager/base.html' %}
-
 {% block title %}All Projects{% endblock %}
+{% block extra_js %}
+  <!-- jQuery and DataTables -->
+  <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.2/b-3.2.4/b-html5-3.2.4/b-print-3.2.4/r-3.0.5/datatables.min.css" rel="stylesheet" integrity="sha384-p78bKIqAJ7x6v90Dw5g2lmJ7n9PZ+flUyS8uZMPQkE4+n/CIBR/X6DTOrui4Tk2g" crossorigin="anonymous">
+<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.2/b-3.2.4/b-html5-3.2.4/b-print-3.2.4/r-3.0.5/datatables.min.js" integrity="sha384-TLtazMzLnsVyI21Du5+jUEJSWPFdc2VpuhhRPP1kQUUDYAsGbmS3ooptNuXRnJq+" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $('#projectsTable').DataTable({
+        responsive: true,
+        pageLength: 10,
+        ordering: true,
+        searchable: true
+      });
+    });
+  </script>
+{% endblock %}
+
 
 {% block content %}
-  <h2>All Projects</h2>
-  <ul>
-    {% for project in project_list %}
-      <li><a href="{% url 'project_detail' project.pk %}">{{ project.name }} ({{ project.start_date }} - {{ project.end_date }})</a></li>
-    {% endfor %}
-  </ul>
+<div class="container mt-4">
+  <h1 class="mb-4">All Projects</h1>
+
+  <table id="projectsTable" class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Email PDF</th>
+        <th>Comparison PDF</th>
+        <th>Team Members</th>
+        <th>Approvers</th>
+        <th>Webpages</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in project_list %}
+        <tr>
+          <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
+          <td>{{ project.start_date }}</td>
+          <td>{{ project.end_date }}</td>
+          <td>
+            {% if project.email_pdf_url %}
+              <a href="{{ project.email_pdf_url }}" target="_blank">View</a>
+            {% else %}
+              N/A
+            {% endif %}
+          </td>
+          <td>
+            {% if project.comparison_pdf_url %}
+              <a href="{{ project.comparison_pdf_url }}" target="_blank">View</a>
+            {% else %}
+              N/A
+            {% endif %}
+          </td>
+          <td>
+            {% for person in project.team_members.all %}
+              {{ person.first_name }} {{ person.last_name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+              None
+            {% endfor %}
+          </td>
+          <td>
+            {% for person in project.approvers.all %}
+              {{ person.first_name }} {{ person.last_name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+              None
+            {% endfor %}
+          </td>
+          <td>
+            {% for page in project.webpages.all %}
+              <a href="{{ page.url }}" target="_blank">{{ page.url }}</a>{% if not forloop.last %}, {% endif %}
+            {% empty %}
+              None
+            {% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
+
+

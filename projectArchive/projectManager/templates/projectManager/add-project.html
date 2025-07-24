@@ -1,44 +1,46 @@
 {% extends 'projectManager/base.html' %}
+{% block title %}New Project{% endblock %}
 
 {% block content %}
 <div class="container">
-  <h1>Add New Project</h1>
+  <h1>New Project</h1>
 
   <form method="post">
     {% csrf_token %}
 
     <!-- Project Fields -->
-    <div class="mb-3">
-      <label for="{{ form.name.id_for_label }}" class="form-label">Project Name</label>
-      {{ form.name }}
-    </div>
-    <div class="mb-3">
-      <label for="{{ form.start_date.id_for_label }}" class="form-label">Start Date</label>
-      {{ form.start_date }}
-    </div>
-    <div class="mb-3">
-      <label for="{{ form.end_date.id_for_label }}" class="form-label">End Date</label>
-      {{ form.end_date }}
-    </div>
-    <div class="mb-3">
-      <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
-      {{ form.description }}
-    </div>
-    <div class="mb-3">
-      <label for="{{ form.email_pdf_url.id_for_label }}" class="form-label">Email PDF URL</label>
-      {{ form.email_pdf_url }}
-    </div>
-    <div class="mb-3">
-      <label for="{{ form.comparison_pdf_url.id_for_label }}" class="form-label">Comparison PDF URL</label>
-      {{ form.comparison_pdf_url }}
-    </div>
-
+     <div class="row ps-3">
+        <div class="col-12 mb-3">
+        <label for="{{ form.name.id_for_label }}" class="form-label">Project Name</label>
+        {{ form.name }}
+      </div>
+      <div class="col-12 col-sm-6 mb-3">
+        <label for="{{ form.start_date.id_for_label }}" class="form-label">Start Date</label>
+        {{ form.start_date }}
+      </div>
+      <div class="col-12 col-sm-6 mb-3">
+        <label for="{{ form.end_date.id_for_label }}" class="form-label">End Date</label>
+        {{ form.end_date }}
+      </div>
+      <div class="col-12 mb-3">
+        <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+        {{ form.description }}
+      </div>
+      <div class="col-12 mb-3">
+        <label for="{{ form.email_pdf_url.id_for_label }}" class="form-label">Email PDF URL</label>
+        {{ form.email_pdf_url }}
+      </div>
+      <div class="col-12 mb-3">
+        <label for="{{ form.comparison_pdf_url.id_for_label }}" class="form-label">Comparison PDF URL</label>
+        {{ form.comparison_pdf_url }}
+      </div>      
+     </div>  
     <hr>
 
-    <!-- Team Members -->
+     <!-- Team Members -->
     <h2>Team Members</h2>
     {{ team_member_formset.management_form }}
-    <div id="team-member-forms">
+    <div class="ps-3" id="team-member-forms">
       {% for form in team_member_formset %}
         <div class="dynamic-form team-members-form mb-4">
           <div class="d-flex justify-content-between align-items-center">
@@ -48,16 +50,20 @@
               <button type="button" class="remove-team_members btn btn-sm btn-danger"><i class="bi bi-x-lg fs-5"></i></button>
             </div>
           </div>
-          <div class="mb-3">
-            {{ form.first_name.label_tag }} {{ form.first_name }}
+          <div class="row">
+            <div class="col-12 col-sm-6 mb-3">
+              <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+              {{ form.first_name }}
+            </div>
+            <div class="col-12 col-sm-6 mb-3">
+              <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+              {{ form.last_name }}
+            </div>
+            <div class="col-12 mb-3">
+              <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+              {{ form.email }}
+            </div>
           </div>
-          <div class="mb-3">
-            {{ form.last_name.label_tag }} {{ form.last_name }}
-          </div>
-          <div class="mb-3">
-            {{ form.email.label_tag }} {{ form.email }}
-          </div>
-        </div>
       {% endfor %}
     </div>
 
@@ -66,7 +72,7 @@
     <!-- Approvers -->
     <h2>Approvers</h2>
     {{ approver_formset.management_form }}
-    <div id="approver-forms">
+    <div class="ps-3" id="approver-forms">
       {% for form in approver_formset %}
         <div class="dynamic-form approvers-form mb-4">
           <div class="d-flex justify-content-between align-items-center">
@@ -76,14 +82,19 @@
               <button type="button" class="remove-approvers btn btn-sm btn-danger"><i class="bi bi-x-lg fs-5"></i></button>
             </div>
           </div>
-          <div class="mb-3">
-            {{ form.first_name.label_tag }} {{ form.first_name }}
-          </div>
-          <div class="mb-3">
-            {{ form.last_name.label_tag }} {{ form.last_name }}
-          </div>
-          <div class="mb-3">
-            {{ form.email.label_tag }} {{ form.email }}
+          <div class="row">
+            <div class="col-12 col-sm-6 mb-3">
+              <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+              {{ form.first_name }}
+            </div>
+            <div class="col-12 col-sm-6 mb-3">
+              <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+              {{ form.last_name }}
+            </div>
+            <div class="col-12 mb-3">
+              <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+              {{ form.email }}
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -94,7 +105,7 @@
     <!-- Webpages -->
     <h2>Webpages</h2>
     {{ webpage_formset.management_form }}
-    <div id="webpage-forms">
+    <div class="ps-3" id="webpage-forms">
       {% for form in webpage_formset %}
         <div class="dynamic-form webpages-form mb-4">
           <div class="d-flex justify-content-between align-items-center">
@@ -105,7 +116,8 @@
             </div>
           </div>
           <div class="mb-3">
-            {{ form.url.label_tag }} {{ form.url }}
+            <label for="{{ form.url.id_for_label }}" class="form-label">Webpage URL</label>
+            {{ form.url }}
           </div>
         </div>
       {% endfor %}
@@ -114,7 +126,9 @@
     <hr>
 
     <!-- Submit -->
-    <button type="submit" class="btn btn-primary">Submit Project</button>
+     <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary btn-lg">Submit Project</button>
+     </div>    
   </form>
 </div>
 {% endblock %}
